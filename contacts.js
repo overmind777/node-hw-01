@@ -34,9 +34,15 @@ export async function addContact(name, email, phone) {
 
 export async function removeContact(contactId) {
   const data = await listContacts(contactId);
-  const removedContact = data.filter(contact => contact.id === contactId)
-  const result = data.filter(contact => contact.id !== contactId)
-  fs.writeFile(contactsPath, JSON.stringify(result))
+  const removedContactIndex = data.findIndex(contact => contact.id === contactId);
+
+    if (removedContactIndex === -1) {
+      throw new Error('Contact not found');
+    }
+
+    const removedContact = data.splice(removedContactIndex, 1)[0];
+    
+    await fs.writeFile(contactsPath, JSON.stringify(data));
   return removedContact
 }
 
