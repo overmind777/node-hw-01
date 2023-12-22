@@ -1,7 +1,11 @@
+import {
+  listContacts,
+  getContactById,
+  addContact,
+  removeContact,
+} from './contacts.js';
 
-import {listContacts, getContactById, addContact, removeContact} from './contacts.js';
-
-import {Command} from 'commander';
+import { Command } from 'commander';
 
 const program = new Command();
 program
@@ -18,30 +22,26 @@ const argv = program.opts();
 async function invokeAction({ action, id, name, email, phone }) {
   switch (action) {
     case 'list':
-      const res = await listContacts()
-      console.table(res)
+      const res = await listContacts();
+      console.table(res);
       break;
     case 'get':
-      const resById = await getContactById(id)
+      const resById = await getContactById(id);
       if (!resById) {
-        console.log(null)
-        break
-      } 
-      console.log(resById)
+        console.log(null);
+        break;
+      }
+      console.log(resById);
       break;
 
     case 'add':
       const addNewContact = await addContact(name, email, phone);
-      console.log(addNewContact)
+      console.log(addNewContact);
       break;
 
     case 'remove':
       const removeContactById = await removeContact(id);
-      if (removeContactById.length === 0) {
-        console.log(null)
-        break;
-      } 
-      console.log(removeContactById)
+      console.log(removeContactById);
       break;
 
     default:
